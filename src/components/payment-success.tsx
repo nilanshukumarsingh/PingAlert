@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import { Modal } from './ui/model'
+import Image from 'next/image'
 import { LoadingSpinner } from './loading-spinner'
 import { Button } from './ui/button'
 import { CheckIcon, AlertCircle } from 'lucide-react'
@@ -91,10 +92,13 @@ export const PaymentSuccessModal = () => {
         ) : (
           <>
             <div className='relative aspect-video border border-gray-200 w-full overflow-hidden rounded-lg bg-gray-50'>
-              <img
+              <Image
                 src="/brand-asset-heart.png"
-                className='h-full w-full object-cover'
-                alt='Payment success'
+                alt="Payment success"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority={true}
               />
             </div>
 
