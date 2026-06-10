@@ -67,6 +67,8 @@ model Event {
   eventCategoryId  String?
 
   @@index([createdAt])
+  @@index([userId])
+  @@index([eventCategoryId])
 }
 
 model Quota {

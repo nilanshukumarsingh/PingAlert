@@ -6,14 +6,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CheckIcon, ClipboardIcon } from "lucide-react"
 import { useState } from "react"
+import { copyToClipboard } from "@/utils"
 
 export const ApiKeySettings = ({ apiKey }: { apiKey: string }) => {
   const [copySuccess, setCopySuccess] = useState(false)
+  const [showApiKey, setShowApiKey] = useState(false)
 
-  const copyApiKey = () => {
-    navigator.clipboard.writeText(apiKey)
-    setCopySuccess(true)
-    setTimeout(() => setCopySuccess(false), 2000)
+  const copyApiKey = async () => {
+    const success = await copyToClipboard(apiKey)
+    if (success) {
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    }
   }
 
   return (
@@ -21,8 +25,16 @@ export const ApiKeySettings = ({ apiKey }: { apiKey: string }) => {
       <div>
         <Label className="dark:text-zinc-700">Your API Key</Label>
         <div className="mt-1 relative">
-          <Input className="dark:text-zinc-950" type="password" value={apiKey} readOnly />
-          <div className="absolute space-x-0.5 inset-y-0 right-0 flex items-center">
+          <Input className="dark:text-zinc-950 pr-24" type={showApiKey ? "text" : "password"} value={apiKey} readOnly />
+          <div className="absolute space-x-1 inset-y-0 right-0 flex items-center pr-1">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => setShowApiKey(!showApiKey)}
+              className="p-1 w-12 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:outline-none dark:bg-zinc-50 dark:focus:ring-2 dark:focus:ring-brand-500 text-zinc-900"
+            >
+              {showApiKey ? "Hide" : "Show"}
+            </Button>
             <Button
               variant="outline"
               onClick={copyApiKey}

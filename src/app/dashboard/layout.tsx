@@ -64,10 +64,10 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
         <ul>
           {SIDEBAR_ITEMS.map(({ category, items }) => (
             <li key={category} className="mb-4 md:mb-8">
-              <p className="text-xs font-medium leading-6 text-zinc-500">
+              <p className="text-xs font-semibold leading-6 text-zinc-400 dark:text-zinc-500 uppercase tracking-wider pl-2">
                 {category}
               </p>
-              <div className="-mx-2 flex flex-1 flex-col">
+              <div className="-mx-2 flex flex-1 flex-col mt-2">
                 {items.map((item, i) => (
                   <Link
                     key={i}
@@ -76,14 +76,16 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
                       buttonVariants({ variant: "ghost" }),
                       "w-full justify-start group flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium leading-6 transition",
                       item.href === pathname 
-                        ? "bg-brand-50 text-brand-700" 
-                        : "text-zinc-700 hover:bg-gray-50 hover:text-zinc-900"
+                        ? "bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-400 font-semibold" 
+                        : "text-zinc-700 dark:text-zinc-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-white"
                     )}
                     onClick={onClose}
                   >
                     <item.icon className={cn(
-                      "size-4 group-hover:text-zinc-700",
-                      item.href === pathname ? "text-brand-700" : "text-zinc-500"
+                      "size-4 transition-colors",
+                      item.href === pathname 
+                        ? "text-brand-700 dark:text-brand-400" 
+                        : "text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-305"
                     )} />
                     {item.text}
                   </Link>
@@ -96,7 +98,7 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
       <div className="flex flex-col">
         <div className="px-2 py-4 mb-2">
-            <div className="bg-emerald-50 text-emerald-700 px-3 py-2 rounded-md flex items-center gap-2 text-xs font-medium border border-emerald-100">
+            <div className="bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 px-3 py-2 rounded-md flex items-center gap-2 text-xs font-medium border border-emerald-100 dark:border-emerald-500/20">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -104,12 +106,12 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
                 System Operational
             </div>
         </div>
-        <hr className="my-4 md:my-6 w-full h-px bg-gray-100" />
+        <hr className="my-4 md:my-6 w-full h-px bg-gray-100 dark:bg-zinc-800/80" />
         <UserButton
           showName
           appearance={{
             elements: {
-              userButtonBox: "flex-row-reverse",
+              userButtonBox: "flex-row-reverse dark:text-white",
             },
           }}
         />
@@ -122,35 +124,31 @@ const Layout = ({ children }: PropsWithChildren) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   return (
-    <div className="relative h-screen flex flex-col md:flex-row bg-white overflow-hidden">
+    <div className="relative h-screen flex flex-col md:flex-row bg-white dark:bg-[#0c0c0e] overflow-hidden">
       {/* sidebar for desktop */}
-      <div className="hidden md:block w-64 lg:w-80 border-r border-gray-200 p-6 h-full text-brand-900 relative z-10">
+      <div className="hidden md:block w-64 lg:w-80 border-r border-gray-200 dark:border-zinc-850/80 p-6 h-full text-brand-900 dark:text-zinc-300 bg-white dark:bg-[#0c0c0e]/80 backdrop-blur-md relative z-10">
         <Sidebar />
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* mobile header */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-zinc-850/80 bg-white dark:bg-[#0c0c0e]/95 backdrop-blur-md">
           <Logos />
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="text-gray-500 hover:text-gray-600"
+            className="text-gray-500 hover:text-gray-600 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
             <Menu className="size-6" />
           </button>
         </div>
 
         {/* main content area */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6 relative z-10">
-          <div className="relative min-h-full flex flex-col">
-            <div className="h-full flex flex-col flex-1 space-y-4">
-              {children}
-            </div>
-          </div>
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-dark-background relative z-10">
+          {children}
         </div>
 
         <Modal
-          className="p-4"
+          className="p-4 bg-white dark:bg-[#0c0c0e] border border-gray-200 dark:border-zinc-800"
           showModal={isDrawerOpen}
           setShowModal={setIsDrawerOpen}
         >

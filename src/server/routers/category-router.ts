@@ -121,6 +121,51 @@ export const categoryRouter = router({
       return c.json({ eventCategory });
     }),
 
+  editEventCategory: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: CATEGORY_NAME_VALIDATOR,
+        color: z
+          .string()
+          .min(1, "Color is required")
+          .regex(/^#[0-9A-F]{6}$/i, "Invalid color format."),
+        emoji: z.string().emoji("Invalid emoji").optional(),
+      })
+    )
+    .mutation(async ({ c, ctx, input }) => {
+      const { user } = ctx;
+      const { id, color, name, emoji } = input;
+
+      const existing = await db.eventCategory.findUnique({
+        where: { id, userId: user.id }
+      });
+
+      if (!existing) {
+        throw new HTTPException(404, { message: "Category not found." });
+      }
+
+      if (name.toLowerCase() !== existing.name.toLowerCase()) {
+        const duplicate = await db.eventCategory.findUnique({
+          where: { name_userId: { name: name.toLowerCase(), userId: user.id } }
+        });
+        if (duplicate) {
+          throw new HTTPException(409, { message: `Category "${name}" already exists.` });
+        }
+      }
+
+      const updated = await db.eventCategory.update({
+        where: { id },
+        data: {
+          name: name.toLowerCase(),
+          color: parseColor(color),
+          emoji,
+        }
+      });
+
+      return c.json({ eventCategory: updated });
+    }),
+
   insertQuickstartCategories: privateProcedure.mutation(async ({ ctx, c }) => {
     const { user } = ctx;
 

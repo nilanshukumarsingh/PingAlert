@@ -102,7 +102,7 @@ export const CategoryPageContent = ({
               onClick={() =>
                 column.toggleSorting(column.getIsSorted() === "asc")
               }
-              className="dark:text-zinc-700 dark:hover:text-zinc-100 dark:hover:bg-zinc-500"
+              className="dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80"
             >
               Date
               <ArrowUpDown className="ml-2 size-4" />
@@ -111,7 +111,7 @@ export const CategoryPageContent = ({
         },
         cell: ({ row }) => {
           return (
-            <span className="dark:text-zinc-900">
+            <span className="text-gray-650 dark:text-zinc-300 font-medium">
               {new Date(row.getValue("createdAt")).toLocaleString()}
             </span>
           )
@@ -123,7 +123,7 @@ export const CategoryPageContent = ({
             (row.fields as Record<string, any>)[field],
           header: field,
           cell: ({ row }: { row: Row<Event> }) => (
-            <span className="dark:text-zinc-900">
+            <span className="text-gray-900 dark:text-zinc-200 font-medium">
               {(row.original.fields as Record<string, any>)[field] || "-"}
             </span >
           ),
@@ -335,7 +335,7 @@ export const CategoryPageContent = ({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id} className="dark:hover:bg-zinc-100 dark:border-zinc-100">
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="dark:text-zinc-700">
+                    <TableHead key={header.id} className="dark:text-zinc-400 font-semibold">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -355,8 +355,8 @@ export const CategoryPageContent = ({
                     key={rowIndex}
                     className="dark:border-zinc-700 dark:hover:bg-zinc-300/50">
                     {columns.map((_, cellIndex) => (
-                      <TableCell key={cellIndex} className="dark:text-zinc-900">
-                        <div className="h-4 w-full bg-gray-200 text-zinc-950 dark:bg-zinc-100 animate-pulse rounded" />
+                      <TableCell key={cellIndex} className="dark:text-zinc-450">
+                        <div className="h-4 w-full bg-gray-200 text-zinc-950 dark:bg-zinc-800/80 animate-pulse rounded" />
                       </TableCell>
                     ))}
                   </TableRow>
@@ -381,10 +381,10 @@ export const CategoryPageContent = ({
                   </TableRow>
                 ))
               ) : (
-                <TableRow className="dark:border-zinc-700">
+                <TableRow className="dark:border-zinc-805">
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center dark:bg-zinc-100 dark:text-zinc-900"
+                    className="h-24 text-center dark:bg-zinc-900/30 dark:text-zinc-400"
                   >
                     No results.
                   </TableCell>

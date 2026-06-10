@@ -5,8 +5,19 @@ import { authRouter } from "./routers/auth-router"
 import { categoryRouter } from "./routers/category-router"
 import { paymentRouter } from "./routers/payment-routes"
 import { projectRouter } from "./routers/project-router"
+import { HTTPException } from "hono/http-exception"
 
 const app = new Hono().basePath("/api").use(cors())
+
+app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return c.json(
+      { message: err.message || "Something went wrong" },
+      err.status
+    )
+  }
+  return c.json({ message: err.message || "Internal Server Error" }, 500)
+})
 
 /**
  * This is the primary router for your server.

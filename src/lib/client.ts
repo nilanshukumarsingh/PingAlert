@@ -22,8 +22,20 @@ export const baseClient = hc<AppType>(getBaseUrl(), {
     const response = await fetch(input, { ...init, cache: "no-store" });
 
     if (!response.ok) {
+      let errorMessage = response.statusText;
+      try {
+        const body = await response.clone().json();
+        if (body && typeof body === "object" && (body.message || body.error)) {
+          errorMessage = body.message || body.error;
+        }
+      } catch (_) {
+        try {
+          const text = await response.clone().text();
+          if (text) errorMessage = text;
+        } catch (_) {}
+      }
       throw new HTTPException(response.status as StatusCode, {
-        message: response.statusText,
+        message: errorMessage,
         res: response,
       });
     }

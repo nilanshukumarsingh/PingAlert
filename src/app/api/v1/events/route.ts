@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     if (!user) {
-      return NextResponse.json({ message: "Invalid API key" })
+      return NextResponse.json({ message: "Invalid API key" }, { status: 401 })
     }
 
     if (!user?.discordId) {

@@ -58,7 +58,7 @@ const Page = async ({ searchParams }: PageProps) => {
         }
         title="Dashboard"
       >
-        <DashboardPageContent />
+        <DashboardPageContent apiKey={user.apiKey} discordId={user.discordId} />
       </DashboardPage>
     </>
   )

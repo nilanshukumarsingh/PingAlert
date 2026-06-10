@@ -25,7 +25,7 @@ const socialLinks = [
   {
     name: "GitHub",
     icon: Github,
-    href: "https://github.com/nilanshukumarsingh/",
+    href: "https://github.com/nilanshukumarsingh/PingAlert",
   },
 ];
 

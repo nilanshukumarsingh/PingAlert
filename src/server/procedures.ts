@@ -7,13 +7,17 @@ const authMiddleware = j.middleware(async ({ c, next }) => {
   const authHeader = c.req.header("Authorization")
 
   if (authHeader) {
-    const apiKey = authHeader.split(" ")[1] // bearer <API_KEY>
+    const parts = authHeader.split(" ")
+    if (parts.length === 2 && parts[0].toLowerCase() === "bearer") {
+      const apiKey = parts[1]
+      if (apiKey && apiKey.trim() !== "") {
+        const user = await db.user.findUnique({
+          where: { apiKey },
+        })
 
-    const user = await db.user.findUnique({
-      where: { apiKey },
-    })
-
-    if (user) return next({ user })
+        if (user) return next({ user })
+      }
+    }
   }
 
   const auth = await currentUser()
